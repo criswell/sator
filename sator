@@ -1,2 +1,41 @@
 #!/usr/bin/env python
 
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
+
+import sys
+
+def usage():
+    print "sator reverse SSH manager...\n"
+
+    print "Set your configuration in ~/.satorrc\n"
+
+    print "Run without options to set up a stubbed configuration file.\n"
+
+    print "sator can be run in the following modes:"
+    print "   sator serve - As a server (should not be run except by the sator"
+    print "                 client script)\n"
+
+    print "  sator client - As a client. This is the mode you will probably want"
+    print "                 to run sator. This reads the configuration and sets"
+    print "                 up the reverse SSH connections into the machine the"
+    print "                 client is running from."
+
+class SatorConfig(object):
+    '''
+    Very basic config object for sator
+    '''
+    def __init__(self):
+        
+
+if __name__ == "__main__":
+    # We must be run from the command line
+    argv = sys.argv[1:]
+    if "serve" in argv:
+        print "Foo"
+    elif "client" in argv:
+        print "Baz"
+    else:
+        usage()
