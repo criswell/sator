@@ -6,6 +6,7 @@ except ImportError:
     import ConfigParser as configparser
 
 import sys
+import os
 
 def usage():
     print "sator reverse SSH manager...\n"
@@ -28,7 +29,23 @@ class SatorConfig(object):
     Very basic config object for sator
     '''
     def __init__(self):
-        
+        # Weeee! Hardcoded hackery!
+        self._config_filename = ".satorrc"
+        self.C = configparser.SafeConfigParser()
+        self._load_config()
+
+    def _load_config(self):
+        '''
+        Loads the configuration file, or creates a blank one if none exists
+        '''
+        user_config = "%s/%s" % (os.path.expanduser("~"), self._config_filename)
+        if os.path.isfile(user_config):
+            # Attempt to load it
+            try
+            self.C.readfp(open('user_config'))
+            # Check for
+        else:
+            # Okay, we just create it
 
 if __name__ == "__main__":
     # We must be run from the command line
