@@ -1,3 +1,12 @@
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
+
+import sys
+import os
+import time
+
 class SatorConfig(object):
     '''
     Very basic config object for sator
