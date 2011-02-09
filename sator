@@ -24,11 +24,11 @@ def usage():
     print "  sator remote - The remote mode should not be ran manually. It will"
     print "                 be ran by the sator script on the remote machine(s).\n"
 
-class SatorConfig(object, root):
+class SatorConfig(object):
     '''
     Very basic config object for sator
     '''
-    def __init__(self):
+    def __init__(self, root):
         # Weeee! Hardcoded hackery!
         self._config_filename = "satorrc"
         self._sator_root = root
@@ -46,22 +46,24 @@ class SatorConfig(object, root):
                 try:
                     self.C.readfp(open(user_config))
                     # Check for needed sections and items
-                    if(!(self.C.has_option('remote', 'port_range_start') &&
-                       self.C.has_option('remote', 'port_range_end') &&
-                       self.C.has_option('local', 'machine_id'))):
-                        _backup_config()
-                        _create_config()
+                    if(self.C.has_option('remote', 'port_range_start') &
+                       self.C.has_option('remote', 'port_range_end') &
+                       self.C.has_option('local', 'machine_id')):
+                        pass
+                    else:
+                        self._backup_config()
+                        self._create_config()
                 except (configparser.MissingSectionHeaderError,
                         configparser.ParsingError):
-                    _backup_config(user_config)
-                    _create_config(user_config)
+                    self._backup_config(user_config)
+                    self._create_config(user_config)
             else:
                 # Okay, we just create it
-                _create_config(user_config)
+                self._create_config(user_config)
         else:
             # need to create directory and config
             os.mkdir(self._sator_root)
-            _create_config(user_config)
+            self._create_config(user_config)
 
     def _backup_config(self, user_config):
         '''
@@ -75,17 +77,17 @@ class SatorConfig(object, root):
         '''
         Creates a default config file
         '''
-        if(!self.C.has_section('remote')):
+        if(not self.C.has_section('remote')):
             self.C.add_section('remote')
 
-        if(!self.C.has_section('local')):
+        if(not self.C.has_section('local')):
             self.C.add_section('local')
 
-        if(!self.C.has_section('remote_systems')):
+        if(not self.C.has_section('remote_systems')):
             self.C.add_section('remote_systems')
 
-        self.C.set('remote', 'port_range_start', 19999)
-        self.C.set('remote', 'port_range_end', 29999)
+        self.C.set('remote', 'port_range_start', '19999')
+        self.C.set('remote', 'port_range_end', '29999')
 
         self.C.set('local', 'machine_id', os.uname()[1])
         with open(user_config, 'wb') as configfile:
