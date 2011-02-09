@@ -7,6 +7,7 @@ except ImportError:
 
 import sys
 import os
+import time
 
 def usage():
     print "sator reverse SSH manager...\n"
@@ -41,11 +42,32 @@ class SatorConfig(object):
         user_config = "%s/%s" % (os.path.expanduser("~"), self._config_filename)
         if os.path.isfile(user_config):
             # Attempt to load it
-            try
-            self.C.readfp(open('user_config'))
-            # Check for
+            try:
+                self.C.readfp(open(user_config))
+                # Check for needed sections
+            except (configparser.MissingSectionHeaderError,
+                    configparser.ParsingError):
+                # Our config file is fubar, we'll nuke it after backing it up
+                backup_config = "%s.backup-%i" % (user_config % int(time.time()))
+                os.rename(user_config, backup_config)
+                _create_config()
         else:
             # Okay, we just create it
+            _create_config()
+
+    def _create_config(self):
+        '''
+        Creates a default config file
+        '''
+        if(!self.C.has_section('remote')):
+            self.C.add_section('remote')
+
+        if(!self.C.has_section('local')):
+            self.C.add_section('local')
+
+        if(!self.C.has_option('remote', 'port_range_low')):
+            self.C.set('remote', 'port_range_low', 19999)
+            self.C.set('remote', 'port_range_end', 29999)
 
 if __name__ == "__main__":
     # We must be run from the command line
