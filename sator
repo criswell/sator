@@ -12,7 +12,7 @@ import time
 def usage():
     print "sator reverse SSH manager...\n"
 
-    print "Set your configuration in ~/.satorrc\n"
+    print "Set your configuration in ~/.sator/satorrc\n"
 
     print "Run without options to set up a stubbed configuration file.\n"
 
@@ -31,10 +31,13 @@ class SatorConfig(object, root):
     '''
     def __init__(self):
         # Weeee! Hardcoded hackery!
-        self._config_filename = ".satorrc"
+        self._config_filename = "satorrc"
         self._sator_root = root
         self.C = configparser.SafeConfigParser()
         self._load_config()
+        self.port_range_start = None
+        self.port_range_end = None
+        self.machine_id = None
 
     def _load_config(self):
         '''
@@ -46,7 +49,21 @@ class SatorConfig(object, root):
                 # Attempt to load it
                 try:
                     self.C.readfp(open(user_config))
-                    # Check for needed sections
+                    # Check for needed sections and items
+                    if(self.C.has_option('remote', 'port_range_start') &&
+                       self.C.has_option('remote', 'port_range_end') &&
+                       self.C.has_option('local', 'machine_id')):
+                        self.port_range_start =
+                            self.C.has_option('remote', 'port_range_start')
+                        self.port_range_end =
+                            self.C.has_option('remote', 'port_range_end')
+                        self.machine_id =
+                            self.C.has_option('local', 'machine_id')
+                    else:
+                        # Our config file is fubar, we'll nuke it after backing it up
+                        backup_config = "%s.backup-%i" % (user_config % int(time.time()))
+                        os.rename(user_config, backup_config)
+                        _create_config()
                 except (configparser.MissingSectionHeaderError,
                         configparser.ParsingError):
                     # Our config file is fubar, we'll nuke it after backing it up
