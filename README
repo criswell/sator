@@ -1,0 +1,20 @@
+                        Sator Reverse SSH Manager
+                        c. 2010, 2011 Samuel Hart
+------------------------------------------------------------------------------
+
+Table of Contents
+1) Introduction
+
+------------------------------------------------------------------------------
+
+1) Introduction
+
+1.a) Meaning behind the name
+
+    The name 'sator' comes from the Latin palindrome "SATOR AREPO TENET OPERA
+ROTAS", which, roughly translated means "the farmer uses his plough as his form
+of work". This was chosen because the purpose of this tool was to overcome
+certain networking limitations which were preventing me from comfortablity
+completing a job I was tasked to do (e.g., this was a 'plough' I needed to use
+in my work) and also because the reverse SSH nature of the script is somewhat
+palindrome-esque.
