@@ -52,7 +52,7 @@ class SSH_Handler(object):
                 cmd.append("-p %s" % rport)
             cmd.append("%s@%s" % (username, host))
 
-            cmd.append('"%s"' % command)
+            cmd.append('"remote %s"' % command)
 
             try:
                 ssh_obj = subprocess.Popen(cmd, stdout=subprocess.PIPE)
