@@ -10,7 +10,7 @@ def local(config, root, argv):
     '''
     handler = localhandler.LocalHandler(config, root)
 
-    if not handler.autossh:
+    if not handler.autossh or not handler.ssh:
         print "autossh not found on system!"
         print "Please install autossh and try again..."
         sys.exit()

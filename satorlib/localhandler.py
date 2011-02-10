@@ -34,6 +34,8 @@ class LocalHandler(object):
                     self.autossh_running[system] = False
 
         self.ssh = SSH_Handler(self._config)
+        if not self.ssh.ssh:
+            self.ssh = None
 
     def get_remote_systems(self):
         '''
