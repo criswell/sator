@@ -17,3 +17,14 @@ class SSH_Handler(object):
                     self.ssh = "%s/ssh" % path
                     break
 
+    def get_port_from_remote(self, uri):
+        '''
+        uri = username@host:rport
+
+        Given a username, host, and remote port, will attempt to connect to it
+        and ask the remote sator system what port we should use. If rport is
+        None, then we will not use any special port settings.
+
+        If we return None, then it means an error occured.
+        '''
+        

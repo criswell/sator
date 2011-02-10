@@ -76,3 +76,17 @@ class LocalHandler(object):
                     os.remove(pidfile)
         return None
 
+    def start(self, sysname):
+        '''
+        Given a system name, will attempt to start a connection with it.
+        '''
+        if self.autossh_running[sysname]:
+            # Hmm, well, we're already running, so return success?
+            return True
+
+        # Start by connecting with the remote system and finding out our port
+        port = None
+        if self.ssh:
+            port = self.ssh.get_port_from_remote(self.all_remote[sysname])
+
+        # Now, launch autossh with the appropriate port

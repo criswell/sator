@@ -28,7 +28,13 @@ def usage():
     print "                 Lists the current states of the connections that sator"
     print "                 is configured to handle.\n"
 
-    print " sator local shutdown [connection]"
+    print " sator local start [connection] [...]"
+    print "                 Start connection(s). If run with no options, will start"
+    print "                 all connections that sator is configured to manage."
+    print "                 Otherwise, supply a list of the connections you wish to"
+    print "                 start by machine ID.\n"
+
+    print " sator local shutdown [connection] [...]"
     print "                 Shutdown existing connection(s). If run with no"
     print "                 options, will shutdown all connections. Otherwise, you"
     print "                 must supply the connection(s) by machine ID you wish to"
