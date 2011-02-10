@@ -15,17 +15,6 @@ def local(config, root, argv):
         print "Please install autossh and try again..."
         sys.exit()
 
-    # Check if there's already an autossh running for our connections
-    if os.path.isfile(autossh_pidfile):
-        # PID exists, verify it is running
-        with open(autossh_pidfile, 'r') as f:
-            autossh_pid = f.read().rstrip()
-
-        if autossh_pid:
-            if os.path.exist("/proc/%s" % autossh_pid):
-                # Autossh verified as running
-                autossh_running = True
-
     # Check for sub-commands
     if "shutdown" in argv:
         if autossh_running:
