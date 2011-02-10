@@ -1,4 +1,4 @@
-def remote(config, argv):
+def remote(config, root, argv):
     '''
     Remote path
     '''

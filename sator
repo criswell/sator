@@ -22,14 +22,18 @@ def usage():
     print "  sator remote - The remote mode should not be ran manually. It will"
     print "                 be ran by the sator script on the remote machine(s).\n"
 
+    print "Commands for local:"
+    print " sator local shutdown -"
+    print "                 Shutdown the existing connection(s)"
+
 if __name__ == "__main__":
     # We must be run from the command line
     argv = sys.argv[1:]
     root = "%s/.sator" % (os.path.expanduser("~"))
     config = SatorConfig(root)
     if "local" in argv:
-        local(config, argv)
+        local(config, root, argv)
     elif "remote" in argv:
-        remote(config, argv)
+        remote(config, root, argv)
     else:
         usage()
