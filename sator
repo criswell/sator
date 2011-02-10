@@ -4,6 +4,8 @@ import os
 import sys
 
 from satorlib.config import SatorConfig
+from satorlib.local import *
+from satorlib.remote import *
 
 def usage():
     print "sator reverse SSH manager...\n"
@@ -19,18 +21,6 @@ def usage():
 
     print "  sator remote - The remote mode should not be ran manually. It will"
     print "                 be ran by the sator script on the remote machine(s).\n"
-
-def local(config, argv):
-    '''
-    Local path
-    '''
-    print "Foo"
-
-def remote(config, argv):
-    '''
-    Remote path
-    '''
-    print "Baz"
 
 if __name__ == "__main__":
     # We must be run from the command line
