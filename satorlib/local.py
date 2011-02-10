@@ -41,11 +41,14 @@ def local(config, root, argv):
             machine_ids = []
             for entry in handler.all_remote:
                 machine_ids.append(entry[0])
-        for sysname in machine_ids:
-            if handler.autossh_running[sysname]:
-                print "Connection '%s' already running! Skipping..." % sysname
-            else:
-                if handler.start(sysname):
-                    print "Connection '%s' started..." % sysname
+        if len(machine_ids) > 1:
+            for sysname in machine_ids:
+                if handler.autossh_running[sysname]:
+                    print "Connection '%s' already running! Skipping..." % sysname
                 else:
-                    print "Problem establishing connection '%s'..." % sysname
+                    if handler.start(sysname):
+                        print "Connection '%s' started..." % sysname
+                    else:
+                        print "Problem establishing connection '%s'..." % sysname
+        else:
+            print "No remote systems defined"
