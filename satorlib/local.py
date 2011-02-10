@@ -8,21 +8,9 @@ def local(config, root, argv):
     '''
     Local path
     '''
-    # First, find the autossh binary
-    autossh = None
-    autossh_pidfile = "%s/%s" % (root, __autossh_pidfile)
-    autossh_pid = None
-    autossh_running = False
+    handler = localhandler.LocalHandler(config, root)
 
-    if(config.C.has_option('local', 'autossh'):
-        autossh = config.C.get('local', 'autossh')
-    else:
-        for path in __search_paths:
-            if os.path.isfile("%s/autossh" % path):
-                autossh = "%s/autossh" % path
-                break
-
-    if not autossh:
+    if not handler.autossh:
         print "autossh not found on system!"
         print "Please install autossh and try again..."
         sys.exit()
