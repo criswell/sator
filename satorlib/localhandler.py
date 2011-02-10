@@ -42,8 +42,20 @@ class LocalHandler(object):
         else:
             return None
 
+    def get_pidfile(self, sysname):
+        '''
+        Given a system name, will return the appropriate PID file for
+        autossh.
+        '''
+        return "%s.%s" % (self.autossh_pidfile_base, sysname)
+
     def check_running_pid(self, sysname):
-        pidfile = "%s.%s" % (self.autossh_pidfile_base, sysname)
+        '''
+        Given a system name, will check if there's an associated
+        autossh running for that system. If so, will return the PID for it.
+        If not, will return None.
+        '''
+        pidfile = get_pidfile(sysname)
         # Check if there's already an autossh running for our connections
         if os.path.isfile(pidfile):
             # PID exists, verify it is running
