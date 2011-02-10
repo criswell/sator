@@ -1,6 +1,5 @@
 # Search paths
-__search_paths =
-[
+__search_paths = [
     "/bin",
     "/usr/bin",
     "/usr/local/bin",
