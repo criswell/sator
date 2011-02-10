@@ -1,5 +1,6 @@
 import os
 from satorlib import *
+from satorlib.ssh import SSH_Handler
 
 class LocalHandler(object):
     '''
@@ -9,21 +10,21 @@ class LocalHandler(object):
         self._config = config
         self._root = root
         self.autossh = None
-        self.autossh_pidfile_base = "%s/%s" % (self._root, __autossh_pidfile)
+        self.autossh_pidfile_base = "%s/%s" % (self._root, autossh_pidfile)
         self.autossh_pids = {}
         self.autossh_running = {}
 
         # First, find the autossh binary
-        if(self._config.C.has_option('local', 'autossh'):
+        if self._config.C.has_option('local', 'autossh'):
             self.autossh = self._config.C.get('local', 'autossh')
         else:
-            for path in __search_paths:
+            for path in search_paths:
                 if os.path.isfile("%s/autossh" % path):
                     self.autossh = "%s/autossh" % path
                     break
 
         # Next, let's establish what is currently running
-        self.all_remote = get_remote_systems()
+        self.all_remote = self.get_remote_systems()
         if self.all_remote:
             for system in self.all_remote:
                 pid = check_running_pid(system)

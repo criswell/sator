@@ -1,5 +1,5 @@
 # Search paths
-__search_paths = [
+search_paths = [
     "/bin",
     "/usr/bin",
     "/usr/local/bin",
@@ -7,4 +7,4 @@ __search_paths = [
 
 __version__ = '0.0.1'
 
-__autossh_pidfile = "autossh.pid"
+autossh_pidfile = "autossh.pid"

@@ -1,4 +1,5 @@
 import os
+from satorlib import *
 
 class SSH_Handler(object):
     '''
@@ -11,7 +12,7 @@ class SSH_Handler(object):
         if self._config.C.has_option('global', 'ssh'):
             self.ssh = self._config.C.has_option('global', 'ssh')
         else:
-            for path in __search_paths:
+            for path in search_paths:
                 if os.path.isfile("%s/ssh" % path):
                     self.ssh = "%s/ssh" % path
                     break
