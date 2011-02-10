@@ -33,6 +33,8 @@ class LocalHandler(object):
                 else:
                     self.autossh_running[system] = False
 
+        self.ssh = SSH_Handler(self._config)
+
     def get_remote_systems(self):
         '''
         Get a list of the remote systems, or None if it doesn't exist
@@ -66,4 +68,8 @@ class LocalHandler(object):
                 if os.path.exist("/proc/%s" % pid):
                     # Autossh verified as running
                     return pid
+                else:
+                    # It must be dead, let's nuke the PID file
+                    os.remove(pidfile)
         return None
+
