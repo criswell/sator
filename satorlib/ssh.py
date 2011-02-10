@@ -1,4 +1,5 @@
 import os
+import subprocess
 from satorlib import *
 
 class SSH_Handler(object):
@@ -17,6 +18,52 @@ class SSH_Handler(object):
                     self.ssh = "%s/ssh" % path
                     break
 
+    def uri_split(self, uri):
+        '''
+        Given a uri of the format "username@host:port" will return a tuple with
+        each item split into its own element.
+        '''
+        (username, hostport) = uri.split('@')
+
+        hp = hostport.split(':')
+        host = None
+        port = None
+
+        if len(hp) > 1:
+            host = hp[0]
+            port = hp[1]
+        else:
+            host = hp[0]
+
+        return (username, host, port)
+
+    def _remote_command(uri, command):
+        '''
+        Internal function, should not be called externally!
+
+        Takes a URI and a command, and calls a remote sator install with it.
+        Returns the output or None on failure.
+        '''
+        if self.ssh:
+            (username, host, rport) = self.uri_split(uri)
+            cmd = []
+            cmd.append(self.ssh)
+            if rport:
+                cmd.append("-p %s" % rport)
+            cmd.append("%s@%s" % (username, host))
+
+            cmd.append('"%s"' % command)
+
+            try:
+                ssh_obj = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+                output = ssh_obj.stdout.readlines()
+                ssh_obj.stdout.close()
+                return output
+            except:
+                return None
+        else:
+            return None
+
     def get_port_from_remote(self, uri):
         '''
         uri = username@host:rport
@@ -27,4 +74,4 @@ class SSH_Handler(object):
 
         If we return None, then it means an error occured.
         '''
-        
+        return self._remote_command(uri, "myport %s" % self._config.C.get('local', 'machine_id'))
