@@ -19,5 +19,6 @@ remote_already_active = '-10'
 remote_dictfile = "remotes.dict"
 
 class RemoteDefinition(object):
-    self.port = None
-    self.active = False
+    def __init__(self):
+        self.port = None
+        self.active = False
