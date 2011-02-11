@@ -94,4 +94,28 @@ class LocalHandler(object):
             port = self.ssh.get_port_from_remote(self.all_remote[sysname])
 
         # Now, launch autossh with the appropriate port
-        print "Got back '%s'" % port
+        if port:
+            # First, check error codes
+            if port == remote_error_code:
+                print "General remote error!"
+                return False
+            elif port == remote_already_active:
+                print "Remote connection claims active, but local autossh dead!"
+                return False
+            elif port == remote_port_range_exhausted:
+                print "Remote port range exhausted!"
+                return False
+            else:
+                # Alright, launch autoshh
+                self._launch_autossh(sysname, port)
+        else:
+            # some error occured
+            return False
+
+    def _launch_autossh(self, sysname, port):
+        '''
+        Internal method, do not call externally!
+
+        Launch the autossh binary once we've established it's ready to go.
+        '''
+        

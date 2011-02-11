@@ -79,7 +79,7 @@ class SSH_Handler(object):
 
         port = None
 
-        if len(pl) == 1:
+        if len(pl) > 0:
             port = pl[0]
 
         return port
