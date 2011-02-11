@@ -27,7 +27,7 @@ class LocalHandler(object):
         self.all_remote = self.get_remote_systems()
         if self.all_remote:
             for system in self.all_remote:
-                pid = check_running_pid(system)
+                pid = self.check_running_pid(system)
                 if pid:
                     self.autossh_pids[system] = pid
                     self.autossh_running[system] = True
@@ -60,7 +60,7 @@ class LocalHandler(object):
         autossh running for that system. If so, will return the PID for it.
         If not, will return None.
         '''
-        pidfile = get_pidfile(sysname)
+        pidfile = self.get_pidfile(sysname)
         # Check if there's already an autossh running for our connections
         if os.path.isfile(pidfile):
             # PID exists, verify it is running
