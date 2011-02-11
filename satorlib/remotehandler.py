@@ -24,7 +24,7 @@ class RemoteHandler(object):
         # First, get all the current ports in use
         ports_in_use = []
         for remotes in self.all_remotes:
-            if remotes.active && remotes.port:
+            if remotes.active and remotes.port:
                 ports_in_use.append(remotes.port)
 
         # Next, start lowest, and find the first free port
