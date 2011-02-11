@@ -24,10 +24,13 @@ class LocalHandler(object):
                     break
 
         # Next, let's establish what is currently running
-        self.all_remote = self.get_remote_systems()
-        if self.all_remote:
-            for entries in self.all_remote:
+        self.all_remote = None
+        remote_sys = self.get_remote_systems()
+        if remote_sys:
+            self.all_remote = {}
+            for entries in remote_sys:
                 (system, uri) = entries
+                self.all_remote[system] = uri
                 pid = self.check_running_pid(system)
                 if pid:
                     self.autossh_pids[system] = pid
