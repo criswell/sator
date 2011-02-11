@@ -37,7 +37,7 @@ class SSH_Handler(object):
 
         return (username, host, port)
 
-    def _remote_command(uri, command):
+    def _ssh_command(uri, command):
         '''
         Internal function, should not be called externally!
 
@@ -52,7 +52,7 @@ class SSH_Handler(object):
                 cmd.append("-p %s" % rport)
             cmd.append("%s@%s" % (username, host))
 
-            cmd.append('"remote %s"' % command)
+            cmd.append('"%s"' % command)
 
             try:
                 ssh_obj = subprocess.Popen(cmd, stdout=subprocess.PIPE)
@@ -74,4 +74,4 @@ class SSH_Handler(object):
 
         If we return None, then it means an error occured.
         '''
-        return self._remote_command(uri, "myport %s" % self._config.C.get('local', 'machine_id'))
+        return self._ssh_command(uri, "remote myport %s" % self._config.C.get('local', 'machine_id'))
