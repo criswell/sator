@@ -9,7 +9,7 @@ class RemoteHandler(object):
     def __init__(self, config, root):
         self._config = config
         self._root = root
-        self._dictfile = "%s/%s" (self._root, remote_dictfile)
+        self._dictfile = "%s/%s" % (self._root, remote_dictfile)
         self.all_remotes = None
         if os.path.isfile(self._dictfile):
             with open(self._dictfile, 'r') as f:
@@ -23,21 +23,22 @@ class RemoteHandler(object):
         '''
         # First, get all the current ports in use
         ports_in_use = []
-        for remotes in self.all_remotes:
-            if remotes.active and remotes.port:
-                ports_in_use.append(remotes.port)
+        for remotes in self.all_remotes.keys():
+            if self.all_remotes[remotes].active and self.all_remotes[remotes].port:
+                ports_in_use.append(self.all_remotes[remotes].port)
 
         # Next, start lowest, and find the first free port
         # NOTE - This may not be the most efficient, but we don't have to do
         # this very often (hopefully) so, unless it becomes a problem, we'll
         # not worry about it
-        start = self._config.C.get('remote', 'port_range_start')
-        end = self._config.C.get('remote', 'port_range_end')
+        start = self._config.C.getint('remote', 'port_range_start')
+        end = self._config.C.getint('remote', 'port_range_end')
 
         port = start
         while port < end:
             if not port in ports_in_use:
                 return port
+            port = port + 1
 
         # If we get here, then we have a problem
         return remote_port_range_exhausted
@@ -81,7 +82,7 @@ class RemoteHandler(object):
                     remoteEntry.active = True
                 self.all_remotes[host] = remoteEntry
                 self._save_remotes()
-                return self.remoteEntry.port
+                return remoteEntry.port
         else:
             # Hey! You're the first!
             self.all_remotes = {}
@@ -91,4 +92,4 @@ class RemoteHandler(object):
                 remoteEntry.active = True
             self.all_remotes[host] = remoteEntry
             self._save_remotes()
-            return self.remoteEntry.port
+            return remoteEntry.port
