@@ -27,11 +27,10 @@ def local(config, root, argv):
         if len(handler.all_remote):
             print "(Machine ID)\t(Active)\t(PID)"
             for entry in handler.all_remote:
-                print handler.autossh_running
                 if handler.autossh_running[entry[0]]:
-                    print "%s\tYES\t%s" % (entry[0], handler.autossh_pids[entry[0]])
+                    print "%s\t\tYES\t\t%s" % (entry[0], handler.autossh_pids[entry[0]])
                 else:
-                    print "%s\tNO" % (entry[0])
+                    print "%s\t\tNO" % (entry[0])
         else:
             print "No remote systems defined"
     elif command == 'start':
