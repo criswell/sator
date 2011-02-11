@@ -16,6 +16,9 @@ remote_error_code = '-1'
 # is the error code we get back
 remote_already_active = '-10'
 
+# This error means we've exhausted our port range
+remote_port_range_exhausted = '-20'
+
 remote_dictfile = "remotes.dict"
 
 class RemoteDefinition(object):

@@ -21,7 +21,26 @@ class RemoteHandler(object):
 
         Returns a free port for use.
         '''
-        pass # FIXME TODO
+        # First, get all the current ports in use
+        ports_in_use = []
+        for remotes in self.all_remotes:
+            if remotes.active && remotes.port:
+                ports_in_use.append(remotes.port)
+
+        # Next, start lowest, and find the first free port
+        # NOTE - This may not be the most efficient, but we don't have to do
+        # this very often (hopefully) so, unless it becomes a problem, we'll
+        # not worry about it
+        start = self._config.C.get('remote', 'port_range_start')
+        end = self._config.C.get('remote', 'port_range_end')
+
+        port = start
+        while port < end:
+            if not port in ports_in_use:
+                return port
+
+        # If we get here, then we have a problem
+        return remote_port_range_exhausted
 
     def _save_remotes(self):
         '''
@@ -29,7 +48,9 @@ class RemoteHandler(object):
 
         Saves the remotes data
         '''
-        pass # FIXME TODO
+        if self.all_remotes:
+            with open(self._dictfile, 'w') as f:
+                pickle.dump(self.all_remotes, f)
 
     def setup_port_for_host(self, host):
         '''
