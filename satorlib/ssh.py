@@ -58,6 +58,7 @@ class SSH_Handler(object):
                 ssh_obj = subprocess.Popen(cmd, stdout=subprocess.PIPE)
                 output = ssh_obj.stdout.readlines()
                 ssh_obj.stdout.close()
+                output = [s.rstrip() for s in output]
                 return output
             except:
                 return None
