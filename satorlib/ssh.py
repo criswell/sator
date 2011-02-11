@@ -37,7 +37,7 @@ class SSH_Handler(object):
 
         return (username, host, port)
 
-    def _ssh_command(uri, command):
+    def _ssh_command(self, uri, command):
         '''
         Internal function, should not be called externally!
 
