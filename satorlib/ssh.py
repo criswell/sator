@@ -75,4 +75,11 @@ class SSH_Handler(object):
 
         If we return None, then it means an error occured.
         '''
-        return self._ssh_command(uri, "sator remote myport %s" % self._config.C.get('local', 'machine_id'))
+        pl = self._ssh_command(uri, "sator remote myport %s" % self._config.C.get('local', 'machine_id'))
+
+        port = None
+
+        if len(pl) == 1:
+            port = pl[0]
+
+        return port
