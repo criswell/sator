@@ -90,3 +90,4 @@ class LocalHandler(object):
             port = self.ssh.get_port_from_remote(self.all_remote[sysname])
 
         # Now, launch autossh with the appropriate port
+        print "Got back '%s'" % port
