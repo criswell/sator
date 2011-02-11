@@ -1,4 +1,5 @@
 import os
+import subprocess
 from satorlib import *
 from satorlib.ssh import SSH_Handler
 
@@ -106,8 +107,11 @@ class LocalHandler(object):
                 print "Remote port range exhausted!"
                 return False
             else:
-                # Alright, launch autoshh
-                self._launch_autossh(sysname, port)
+                # Alright, launch autossh
+                if self._launch_autossh(sysname, port):
+                    return True
+                print "Problem launching autossh!"
+                return False
         else:
             # some error occured
             return False
@@ -118,4 +122,9 @@ class LocalHandler(object):
 
         Launch the autossh binary once we've established it's ready to go.
         '''
-        
+        if self.autossh:
+            cmd = []
+            (username, host, rport) = SSH_Handler.uri_split(self.all_remote[sysname])
+            cmd.append(self.autossh)
+        else:
+            return False
