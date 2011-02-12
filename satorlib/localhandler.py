@@ -126,5 +126,12 @@ class LocalHandler(object):
             cmd = []
             (username, host, rport) = SSH_Handler.uri_split(self.all_remote[sysname])
             cmd.append(self.autossh)
+            # FIXME - It would be nice to be able to tweak that 22 there
+            cmd.append("-R %s:localhost:22" % port)
+            if rport:
+                cmd.append("-p %s" % rport)
+            cmd.append("%s@%s" % (username, host))
+            # FIXME - Set up the env
+            autossh_obj = subprocess.Popen(cmd)
         else:
             return False
