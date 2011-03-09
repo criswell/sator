@@ -69,6 +69,9 @@ class SatorConfig(object):
         if(not self.C.has_section('remote_systems')):
             self.C.add_section('remote_systems')
 
+        if(not self.C.has_section('callback_ports')):
+            self.C.add_section('callback_ports')
+
         self.C.set('remote', 'port_range_start', '19999')
         self.C.set('remote', 'port_range_end', '29999')
 

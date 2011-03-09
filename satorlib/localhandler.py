@@ -91,8 +91,11 @@ class LocalHandler(object):
 
         # Start by connecting with the remote system and finding out our port
         port = None
+        callback_port = '22'
         if self.ssh:
             port = self.ssh.get_port_from_remote(self.all_remote[sysname])
+            if(self._config.C.has_option('callback_ports', sysname)):
+                callback_port = self._config.C.get('callback_ports', sysname)
 
         # Now, launch autossh with the appropriate port
         if port:
@@ -108,7 +111,7 @@ class LocalHandler(object):
                 return False
             else:
                 # Alright, launch autossh
-                if self._launch_autossh(sysname, port):
+                if self._launch_autossh(sysname, port, callback_port):
                     return True
                 print "Problem launching autossh!"
                 return False
@@ -116,7 +119,7 @@ class LocalHandler(object):
             # some error occured
             return False
 
-    def _launch_autossh(self, sysname, port):
+    def _launch_autossh(self, sysname, port, callback_port='22'):
         '''
         Internal method, do not call externally!
 
@@ -126,8 +129,8 @@ class LocalHandler(object):
             cmd = []
             (username, host, rport) = SSH_Handler.uri_split(self.all_remote[sysname])
             cmd.append(self.autossh)
-            # FIXME - It would be nice to be able to tweak that 22 there
-            cmd.append("-R %s:localhost:22" % port)
+
+            cmd.append("-R %s:localhost:%s" % (port, callback_port))
             if rport:
                 cmd.append("-p %s" % rport)
             cmd.append("%s@%s" % (username, host))
